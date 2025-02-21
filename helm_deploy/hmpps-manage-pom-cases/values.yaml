@@ -1,21 +1,38 @@
+---
+# Default values.
+# Declare variables to be passed into your templates.
+#
+# Variables in `helm_deploy/values-[env].yaml` will take precedence.
+
 generic-service:
   nameOverride: hmpps-manage-pom-cases
-  productId: 'DPS030' # productId for the product that this belongs too, i.e. DPS001, see README.md for details
+  productId: DPS030
 
   # the IRSA service account name for accessing AWS resources
   # serviceAccountName: "hmpps-manage-pom-cases"
 
-  replicaCount: 4
+  replicaCount: 2
 
   image:
     repository: ghcr.io/ministryofjustice/hmpps-manage-pom-cases
-    tag: app_version # override at deployment time
+    tag: app_version # overridden at deployment time
     port: 3000
 
   ingress:
     enabled: true
-    host: app-hostname.local # override per environment
     tlsSecretName: hmpps-manage-pom-cases-cert
+
+  # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
+  allowlist:
+    groups:
+      - digital_staff_and_mojo
+      - moj_cloud_platform
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
 
   livenessProbe:
     httpGet:
@@ -38,7 +55,6 @@ generic-service:
   # namespace_secrets:
   #   [name of kubernetes secret]:
   #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
-
   namespace_secrets:
     # These secrets are created by terraform.
     hmpps-manage-pom-cases-client-creds:
@@ -49,19 +65,15 @@ generic-service:
       AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'    
     hmpps-manage-pom-cases-session-secret:
       SESSION_SECRET: 'SESSION_SECRET'
-    hmpps-manage-pom-cases-elasticache-redis:
-      REDIS_HOST: 'primary_endpoint_address'
-      REDIS_AUTH_TOKEN: 'auth_token'
     hmpps-manage-pom-cases-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    elasticache-redis:
+      REDIS_HOST: 'primary_endpoint_address'
+      REDIS_AUTH_TOKEN: 'auth_token'
     # This secret will need to be created in your namespace (note it isn't in hmpps-templates-dev)
     # IRSA configuration in your namespace will also be required, and then uncomment serviceAccountName above.
     # sqs-hmpps-audit-secret:
     #   AUDIT_SQS_QUEUE_URL: 'sqs_queue_url'
-
-  allowlist:
-    groups:
-      - internal
 
 generic-prometheus-alerts:
   targetApplication: hmpps-manage-pom-cases

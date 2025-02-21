@@ -2,8 +2,6 @@
 # Per environment values which override defaults in hmpps-manage-pom-cases/values.yaml
 
 generic-service:
-  replicaCount: 2
-
   ingress:
     host: manage-pom-cases-dev.hmpps.service.justice.gov.uk
 
@@ -16,3 +14,7 @@ generic-service:
 
 generic-prometheus-alerts:
   alertSeverity: mpc-alerts-nonprod-dev
+  businessHoursOnly: true
+  elastiCacheAlertsClusterIds:
+    cp-ac22d76ab4b2e98c-001: dev cluster node 1
+    cp-ac22d76ab4b2e98c-002: dev cluster node 2
