@@ -1,7 +1,7 @@
 import express from 'express'
 
 import createError from 'http-errors'
-
+import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -17,6 +17,9 @@ import setUpWebSecurity from './middleware/setUpWebSecurity'
 import setUpWebSession from './middleware/setUpWebSession'
 
 import routes from './routes'
+import logger from '../logger'
+import config from './config'
+
 import type { Services } from './services'
 
 export default function createApp(services: Services): express.Application {
@@ -37,6 +40,14 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+
+  app.get(
+    /^(?!.*\/api\/).*/,
+    dpsComponents.getPageComponents({
+      dpsUrl: config.dpsComponents.url,
+      logger,
+    }),
+  )
 
   app.use(routes(services))
 

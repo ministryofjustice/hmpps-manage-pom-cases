@@ -7,5 +7,7 @@ export default class IndexPage extends Page {
 
   headerUserName = (): PageElement => cy.get('[data-qa=header-user-name]')
 
-  headerPhaseBanner = (): PageElement => cy.get('[data-qa=header-phase-banner]')
+  headerPhaseBanner = (): PageElement => cy.get('.govuk-phase-banner')
+
+  changeLocationLink = (): PageElement => cy.get('[data-qa="changeCaseLoad"]')
 }
