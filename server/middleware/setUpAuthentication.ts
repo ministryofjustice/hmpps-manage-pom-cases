@@ -2,10 +2,12 @@ import passport from 'passport'
 import flash from 'connect-flash'
 import { Router } from 'express'
 import { Strategy } from 'passport-oauth2'
+import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import config from '../config'
 import tokenVerifier from '../data/tokenVerification'
 import { HmppsUser } from '../interfaces/hmppsUser'
 import generateOauthClientToken from '../authentication/clientCredentials'
+import logger from '../../logger'
 
 passport.serializeUser((user, done) => {
   // Not used but required for Passport
@@ -41,10 +43,17 @@ export default function setupAuthentication() {
   router.use(passport.session())
   router.use(flash())
 
-  router.get('/autherror', (req, res) => {
-    res.status(401)
-    return res.render('autherror')
-  })
+  router.get(
+    '/autherror',
+    dpsComponents.getPageComponents({
+      dpsUrl: config.dpsComponents.url,
+      logger,
+    }),
+    (req, res) => {
+      res.status(401)
+      return res.render('autherror')
+    },
+  )
 
   router.get('/sign-in', passport.authenticate('oauth2'))
 

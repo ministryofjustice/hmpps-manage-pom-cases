@@ -98,4 +98,7 @@ export default {
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
+  dpsComponents: {
+    url: get('COMPONENT_API_URL', '', requiredInProduction),
+  },
 }
