@@ -1,11 +1,12 @@
 import IndexPage from '../pages/index'
 import Page from '../pages/page'
+import AuthRole from '../../server/data/authRole'
 
 describe('Header', () => {
   context('when using frontend components fallback', () => {
     beforeEach(() => {
       cy.task('reset')
-      cy.task('stubSignIn')
+      cy.task('stubSignIn', { roles: [AuthRole.POM] })
     })
 
     it('User name visible in header', () => {

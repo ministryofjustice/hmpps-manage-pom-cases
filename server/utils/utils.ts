@@ -1,3 +1,5 @@
+import AuthRole from '../data/authRole'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -21,3 +23,7 @@ export const initialiseName = (fullName?: string): string | null => {
   const array = fullName.split(' ')
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
+
+export const hasRole = (user: Express.User, role: AuthRole): boolean => user?.userRoles.includes(role) || false
+export const hasRoleOrAdmin = (user: Express.User, role: AuthRole): boolean =>
+  hasRole(user, role) || hasRole(user, AuthRole.ADMIN)

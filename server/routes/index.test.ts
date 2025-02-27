@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import request from 'supertest'
-import { appWithAllRoutes, user } from './testutils/appSetup'
+import { appWithAllRoutes, pomUser } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 
 jest.mock('../services/auditService')
@@ -14,7 +14,7 @@ beforeEach(() => {
     services: {
       auditService,
     },
-    userSupplier: () => user,
+    userSupplier: () => pomUser,
   })
 })
 
@@ -31,8 +31,8 @@ describe('GET /', () => {
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('This site is under construction...')
-        expect(auditService.logPageView).toHaveBeenCalledWith(Page.EXAMPLE_PAGE, {
-          who: user.username,
+        expect(auditService.logPageView).toHaveBeenCalledWith(Page.HOME_PAGE, {
+          who: pomUser.username,
           correlationId: expect.any(String),
         })
       })

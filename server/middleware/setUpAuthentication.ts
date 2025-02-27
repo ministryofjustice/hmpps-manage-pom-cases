@@ -31,7 +31,12 @@ passport.use(
       customHeaders: { Authorization: generateOauthClientToken() },
     },
     (token, refreshToken, params, profile, done) => {
-      return done(null, { token, username: params.user_name, authSource: params.auth_source })
+      return done(null, {
+        token,
+        username: params.user_name,
+        authSource: params.auth_source,
+        userRoles: params.authorities,
+      })
     },
   ),
 )
@@ -52,6 +57,18 @@ export default function setupAuthentication() {
     (req, res) => {
       res.status(401)
       return res.render('autherror')
+    },
+  )
+
+  router.get(
+    '/access-denied',
+    dpsComponents.getPageComponents({
+      dpsUrl: config.dpsComponents.url,
+      logger,
+    }),
+    (req, res) => {
+      res.status(403)
+      return res.render('accessDenied', { user: req.user })
     },
   )
 
