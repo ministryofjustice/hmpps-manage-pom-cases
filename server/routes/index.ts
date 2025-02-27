@@ -1,18 +1,20 @@
 import { type RequestHandler, Router } from 'express'
-
+import * as home from './home/controller'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
+import roleCheckMiddleware from '../middleware/roleCheckMiddleware'
+import AuthRole from '../data/authRole'
 
-export default function routes({ auditService }: Services): Router {
+export default function routes(services: Services): Router {
   const router = Router()
-  const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/', async (req, res, next) => {
-    await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  const checkUserHasAccess = roleCheckMiddleware([AuthRole.ADMIN, AuthRole.POM, AuthRole.SPO])
 
-    res.render('pages/index')
-  })
+  const get = (path: string, ...handlers: RequestHandler[]) => router.get(path, handlers.map(asyncMiddleware))
+  // const post = (path: string, ...handlers: RequestHandler[]) => router.post(path, handlers.map(asyncMiddleware))
+  // const destroy = (path: string, ...handlers: RequestHandler[]) => router.delete(path, handlers.map(asyncMiddleware))
+
+  get('/', checkUserHasAccess, home.index(services))
 
   return router
 }

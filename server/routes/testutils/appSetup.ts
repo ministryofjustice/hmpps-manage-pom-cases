@@ -9,6 +9,7 @@ import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import AuthRole from '../../data/authRole'
 
 jest.mock('../../services/auditService')
 
@@ -22,6 +23,10 @@ export const user: HmppsUser = {
   staffId: 1234,
   userRoles: [],
 }
+
+export const pomUser = { ...user, userRoles: [AuthRole.POM] }
+export const spoUser = { ...user, userRoles: [AuthRole.SPO] }
+export const adminUser = { ...user, userRoles: [AuthRole.ADMIN] }
 
 export const flashProvider = jest.fn()
 

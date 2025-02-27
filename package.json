@@ -1,7 +1,7 @@
 {
   "name": "hmpps-manage-pom-cases",
   "version": "0.0.1",
-  "description": "HMPPS Manage Pom Cases",
+  "description": "HMPPS Manage POM Cases",
   "repository": "git@github.com:ministryofjustice/hmpps-manage-pom-cases.git",
   "license": "MIT",
   "scripts": {
