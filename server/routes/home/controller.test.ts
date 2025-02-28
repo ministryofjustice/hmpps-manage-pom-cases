@@ -1,64 +1,40 @@
-import { Services } from '../../services'
-import { index } from './controller'
-import AuthRole from '../../data/authRole'
-import { testRequestHandler } from '../testutils/requestHandler'
-import AuditService from '../../services/auditService'
+import type { Express } from 'express'
+import request from 'supertest'
+import { appWithAllRoutes, pomUser } from '../testutils/appSetup'
+import AuditService, { Page } from '../../services/auditService'
 
 jest.mock('../../services/auditService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const services = { auditService } as unknown as Services
+
+let app: Express
 
 beforeEach(() => {
-  auditService.logPageView.mockResolvedValue(null)
+  app = appWithAllRoutes({
+    services: {
+      auditService,
+    },
+    userSupplier: () => pomUser,
+  })
 })
 
-describe('index', () => {
-  it('configures view context for a POM role', async () => {
-    const [req, res, next] = testRequestHandler({ user: { userRoles: [AuthRole.POM] } })
-    const viewContext = {
-      userIsAdmin: false,
-      userIsSpo: false,
-      userIsPom: true,
-    }
+afterEach(() => {
+  jest.resetAllMocks()
+})
 
-    await index(services)(req, res, next)
-    expect(res.render).toHaveBeenCalledWith('pages/home/index', viewContext)
-  })
+describe('GET /', () => {
+  it('should render index page', () => {
+    auditService.logPageView.mockResolvedValue(null)
 
-  it('configures view context for an SPO role', async () => {
-    const [req, res, next] = testRequestHandler({ user: { userRoles: [AuthRole.SPO] } })
-    const viewContext = {
-      userIsAdmin: false,
-      userIsSpo: true,
-      userIsPom: false,
-    }
-
-    await index(services)(req, res, next)
-    expect(res.render).toHaveBeenCalledWith('pages/home/index', viewContext)
-  })
-
-  it('configures view context for an ADMIN role', async () => {
-    const [req, res, next] = testRequestHandler({ user: { userRoles: [AuthRole.ADMIN] } })
-    const viewContext = {
-      userIsAdmin: true,
-      userIsSpo: false,
-      userIsPom: false,
-    }
-
-    await index(services)(req, res, next)
-    expect(res.render).toHaveBeenCalledWith('pages/home/index', viewContext)
-  })
-
-  it('configures view context for an unrecognised role', async () => {
-    const [req, res, next] = testRequestHandler({ user: { userRoles: ['FOOBAR'] } })
-    const viewContext = {
-      userIsAdmin: false,
-      userIsSpo: false,
-      userIsPom: false,
-    }
-
-    await index(services)(req, res, next)
-    expect(res.render).toHaveBeenCalledWith('pages/home/index', viewContext)
+    return request(app)
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('This site is under construction...')
+        expect(auditService.logPageView).toHaveBeenCalledWith(Page.HOME_PAGE, {
+          who: pomUser.username,
+          correlationId: expect.any(String),
+        })
+      })
   })
 })

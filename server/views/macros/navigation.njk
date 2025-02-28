@@ -1,0 +1,47 @@
+{%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
+
+{% macro primaryNavigation(currentUrl, userIsSpo, userIsPom) %}
+  {% set items = [
+    {
+      text: "POM cases",
+      href: "/",
+      active: currentUrl === "/",
+      shown: userIsSpo or userIsPom
+    },
+    {
+      text: "Allocations",
+      href: "#allocations",
+      active: false,
+      shown: userIsSpo
+    },
+    {
+      text: "Caseload",
+      href: "#caseload",
+      active: false,
+      shown: userIsPom
+    },
+    {
+      text: "Parole",
+      href: "#parole",
+      active: false,
+      shown: userIsSpo
+    },
+    {
+      text: "Handover",
+      href: "#handover",
+      active: false,
+      shown: userIsSpo or userIsPom
+    },
+    {
+      text: "Staff",
+      href: "#staff",
+      active: false,
+      shown: userIsSpo
+    }
+  ] %}
+
+  {{ mojPrimaryNavigation({
+    label: "Primary navigation",
+    items: items | selectattr("shown")
+  }) }}
+{% endmacro %}
