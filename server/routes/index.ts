@@ -8,7 +8,7 @@ import AuthRole from '../data/authRole'
 export default function routes(services: Services): Router {
   const router = Router()
 
-  const checkUserHasAccess = roleCheckMiddleware([AuthRole.ADMIN, AuthRole.POM, AuthRole.SPO])
+  const checkUserHasAccess = roleCheckMiddleware([AuthRole.POM, AuthRole.SPO])
 
   const get = (path: string, ...handlers: RequestHandler[]) => router.get(path, handlers.map(asyncMiddleware))
   // const post = (path: string, ...handlers: RequestHandler[]) => router.post(path, handlers.map(asyncMiddleware))

@@ -1,5 +1,3 @@
-import AuthRole from '../data/authRole'
-
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -13,10 +11,10 @@ const isBlank = (str: string): boolean => !str || /^\s*$/.test(str)
  */
 const properCaseName = (name: string): string => (isBlank(name) ? '' : name.split('-').map(properCase).join('-'))
 
-export const convertToTitleCase = (sentence: string): string =>
+const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
 
-export const initialiseName = (fullName?: string): string | null => {
+const initialiseName = (fullName?: string): string | null => {
   // this check is for the authError page
   if (!fullName) return null
 
@@ -24,6 +22,4 @@ export const initialiseName = (fullName?: string): string | null => {
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
 
-export const hasRole = (user: Express.User, role: AuthRole): boolean => user?.userRoles.includes(role) || false
-export const hasRoleOrAdmin = (user: Express.User, role: AuthRole): boolean =>
-  hasRole(user, role) || hasRole(user, AuthRole.ADMIN)
+export { properCase, convertToTitleCase, initialiseName }
