@@ -22,6 +22,7 @@ import logger from '../logger'
 import config from './config'
 
 import type { Services } from './services'
+import setUpCaseLoad from './middleware/setUpCaseLoad'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -47,9 +48,11 @@ export default function createApp(services: Services): express.Application {
     /^(?!.*\/api\/).*/,
     dpsComponents.getPageComponents({
       dpsUrl: config.dpsComponents.url,
+      includeSharedData: true,
       logger,
     }),
   )
+  app.use(setUpCaseLoad())
 
   app.use(routes(services))
 

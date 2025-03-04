@@ -1,11 +1,11 @@
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 
-{% macro primaryNavigation(currentUrl, userIsSpo, userIsPom) %}
+{% macro primaryNavigation(currentUrl, activeCaseLoadId, userIsSpo, userIsPom) %}
   {% set items = [
     {
       text: "POM cases",
-      href: "/",
-      active: currentUrl === "/",
+      href: paths.prisons.dashboard | toPath({ prisonCode: activeCaseLoadId }),
+      active: currentUrl === paths.prisons.dashboard | toPath({ prisonCode: activeCaseLoadId }),
       shown: userIsSpo or userIsPom
     },
     {

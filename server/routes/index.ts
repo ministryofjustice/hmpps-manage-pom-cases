@@ -1,20 +1,21 @@
-import { type RequestHandler, Router } from 'express'
-import * as home from './home/controller'
-import asyncMiddleware from '../middleware/asyncMiddleware'
+import { Router, Request, Response } from 'express'
 import type { Services } from '../services'
-import roleCheckMiddleware from '../middleware/roleCheckMiddleware'
-import AuthRole from '../data/authRole'
+import prisonRoutes from './prisons'
+import paths from './paths'
 
 export default function routes(services: Services): Router {
   const router = Router()
 
-  const checkUserHasAccess = roleCheckMiddleware([AuthRole.POM, AuthRole.SPO])
+  router.use(prisonRoutes(services))
 
-  const get = (path: string, ...handlers: RequestHandler[]) => router.get(path, handlers.map(asyncMiddleware))
-  // const post = (path: string, ...handlers: RequestHandler[]) => router.post(path, handlers.map(asyncMiddleware))
-  // const destroy = (path: string, ...handlers: RequestHandler[]) => router.delete(path, handlers.map(asyncMiddleware))
-
-  get('/', checkUserHasAccess, home.index(services))
+  router.get(paths.root({}), (_req: Request, res: Response) =>
+    res.redirect(
+      paths.prisons.dashboard({
+        // @ts-expect-error - not sure why the property is not found!
+        prisonCode: res.locals.user.activeCaseLoadId,
+      }),
+    ),
+  )
 
   return router
 }

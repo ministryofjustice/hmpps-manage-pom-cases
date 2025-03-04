@@ -7,6 +7,9 @@ const exampleUserDetails = {
   authSource: 'nomis',
   staffId: 123456,
   userId: '654321',
+  userRoles: ['ROLE1', 'ROLE2'],
+  activeCaseLoadId: 'LEI',
+  caseLoads: [{ caseLoadId: 'LEI', description: 'Leeds' }],
 }
 
 const clientToken = {

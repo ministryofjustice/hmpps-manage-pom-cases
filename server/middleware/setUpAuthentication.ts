@@ -52,6 +52,7 @@ export default function setupAuthentication() {
     '/autherror',
     dpsComponents.getPageComponents({
       dpsUrl: config.dpsComponents.url,
+      includeSharedData: true,
       logger,
     }),
     (req, res) => {

@@ -3,9 +3,11 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
+import { Params, Path } from 'static-path'
 import { initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
+import paths from '../routes/paths'
 import applicationInfo from '../applicationInfo'
 
 export default function nunjucksSetup(app: express.Express): void {
@@ -45,6 +47,14 @@ export default function nunjucksSetup(app: express.Express): void {
       express: app,
     },
   )
+
+  njkEnv.addGlobal('paths', paths)
+  njkEnv.addFilter('toPath', <T extends string>(staticPath: Path<T>, params: Params<T>) => {
+    if (!staticPath) {
+      throw Error(`no path provided`)
+    }
+    return staticPath(params)
+  })
 
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)

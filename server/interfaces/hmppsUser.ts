@@ -1,3 +1,5 @@
+import CaseLoad from './caseLoad'
+
 export type AuthSource = 'nomis' | 'delius' | 'external' | 'azuread'
 
 /**
@@ -24,6 +26,8 @@ export interface BaseUser {
 export interface PrisonUser extends BaseUser {
   authSource: 'nomis'
   staffId: number
+  activeCaseLoadId: string
+  caseLoads: CaseLoad[]
 }
 
 /**
