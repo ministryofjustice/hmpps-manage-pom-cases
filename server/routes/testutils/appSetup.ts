@@ -22,11 +22,12 @@ export const user: HmppsUser = {
   authSource: 'nomis',
   staffId: 1234,
   userRoles: [],
+  activeCaseLoadId: 'LEI',
+  caseLoads: [],
 }
 
 export const pomUser = { ...user, userRoles: [AuthRole.POM] }
 export const spoUser = { ...user, userRoles: [AuthRole.SPO] }
-export const adminUser = { ...user, userRoles: [AuthRole.ADMIN] }
 
 export const flashProvider = jest.fn()
 

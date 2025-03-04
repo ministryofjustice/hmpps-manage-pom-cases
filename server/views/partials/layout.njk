@@ -21,7 +21,7 @@
 
 {% block header %}
   {{ feComponents.header | safe }}
-  {{ primaryNavigation(currentUrl, userContext.isSpo, userContext.isPom) }}
+  {{ primaryNavigation(currentUrl, user.activeCaseLoadId, userContext.isSpo, userContext.isPom) }}
 {% endblock %}
 
 {% block bodyStart %}
