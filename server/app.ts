@@ -44,6 +44,9 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCurrentUser())
   app.use(setUpUserContext())
 
+  // TODO: we need to request client creds for this to work
+  // app.use(populateClientToken(services.hmppsAuthClient))
+
   app.get(
     /^(?!.*\/api\/).*/,
     dpsComponents.getPageComponents({

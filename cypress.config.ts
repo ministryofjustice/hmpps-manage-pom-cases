@@ -3,6 +3,7 @@ import { resetStubs } from './integration_tests/mockApis/wiremock'
 import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import feComponents from './integration_tests/mockApis/feComponents'
+import managePomCases from './integration_tests/mockApis/managePomCases'
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -21,6 +22,7 @@ export default defineConfig({
         ...auth,
         ...tokenVerification,
         ...feComponents,
+        ...managePomCases,
       })
     },
     baseUrl: 'http://localhost:3007',

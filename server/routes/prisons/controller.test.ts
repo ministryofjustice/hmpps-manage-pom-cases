@@ -2,11 +2,14 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, spoUser } from '../testutils/appSetup'
 import AuditService, { Page } from '../../services/auditService'
+import ParoleService from '../../services/paroleService'
 import paths from '../paths'
 
 jest.mock('../../services/auditService')
+jest.mock('../../services/paroleService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
+const paroleService = new ParoleService(null) as jest.Mocked<ParoleService>
 
 let app: Express
 
@@ -14,6 +17,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
+      paroleService,
     },
     userSupplier: () => spoUser,
   })
@@ -50,6 +54,7 @@ describe('Dashboard', () => {
 describe('Parole', () => {
   it('should render the parole cases page', () => {
     auditService.logPageView.mockResolvedValue(null)
+    paroleService.listParoleCases.mockReturnValue(null)
 
     const parolePath = paths.prisons.parole({ prisonCode: 'LEI' })
 
@@ -62,6 +67,8 @@ describe('Parole', () => {
           who: spoUser.username,
           correlationId: expect.any(String),
         })
+        // TODO: update once we start using populateClientToken middleware
+        expect(paroleService.listParoleCases).toHaveBeenCalledWith(undefined)
       })
   })
 })

@@ -19,4 +19,7 @@ export default abstract class SignedInPage extends Page {
 
   primaryNavigationLinks = () =>
     cy.get('nav.moj-primary-navigation a').then(cells => cells.map((index, cell) => cell.innerText).get())
+
+  navigationLink = (text: string): PageElement =>
+    cy.get('nav.moj-primary-navigation a').then(cells => cells.filter((index, cell) => cell.innerText === text))
 }
