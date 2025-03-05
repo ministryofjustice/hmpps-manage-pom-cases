@@ -1,7 +1,8 @@
 import HmppsAuditClient, { AuditEvent } from '../data/hmppsAuditClient'
 
 export enum Page {
-  HOME_PAGE = 'HOME_PAGE',
+  PRISON_DASHBOARD = 'PRISON_DASHBOARD',
+  PAROLE_CASES_PAGE = 'PAROLE_CASES_PAGE',
 }
 
 export interface PageViewEventDetails {

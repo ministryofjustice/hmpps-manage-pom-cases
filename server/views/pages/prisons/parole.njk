@@ -1,0 +1,80 @@
+{% extends "../../partials/layout.njk" %}
+{%- from "govuk/components/table/macro.njk" import govukTable -%}
+
+{% set pageTitle = applicationName + " - Parole cases" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Parole cases</h1>
+
+  <p class="govuk-body">
+    All cases in this prison with a target hearing date, PED or TED in the next 10 months
+  </p>
+
+  <section id="approaching-parole">
+    {% set tableRows = [] %}
+    {% for case in paroleCases %}
+      {% set tableRows = (tableRows.push([
+        {
+          text: case.offenderName,
+          attributes: {
+            "data-qa": "offender-name-column"
+          }
+        },
+        {
+          text: case.pomName,
+          attributes: {
+            "data-qa": "pom-name-column"
+          }
+        },
+        {
+          text: case.pomRole,
+          attributes: {
+            "data-qa": "pom-role-column"
+          }
+        },
+        {
+          text: case.nextParoleDate,
+          attributes: {
+            "data-qa": "next-parole-date-column"
+          }
+        }
+      ]), tableRows) %}
+    {% endfor %}
+
+    {{ govukTable({
+      attributes: {
+        'data-module': 'moj-sortable-table'
+      },
+      head: [
+        {
+          text: "Case",
+          attributes: {
+            "aria-sort": "ascending"
+          }
+        },
+        {
+          text: "POM",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "POM role",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Next parole date",
+          attributes: {
+            "aria-sort": "none"
+          }
+        }
+      ],
+      rows: tableRows
+    }) }}
+  </section>
+
+{% endblock %}
