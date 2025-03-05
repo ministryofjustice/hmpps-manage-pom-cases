@@ -54,7 +54,7 @@ describe('Dashboard', () => {
 describe('Parole', () => {
   it('should render the parole cases page', () => {
     auditService.logPageView.mockResolvedValue(null)
-    paroleService.listParoleCases.mockReturnValue(null)
+    paroleService.listCases.mockReturnValue(null)
 
     const parolePath = paths.prisons.parole({ prisonCode: 'LEI' })
 
@@ -68,7 +68,7 @@ describe('Parole', () => {
           correlationId: expect.any(String),
         })
         // TODO: update once we start using populateClientToken middleware
-        expect(paroleService.listParoleCases).toHaveBeenCalledWith(undefined)
+        expect(paroleService.listCases).toHaveBeenCalledWith(undefined)
       })
   })
 })

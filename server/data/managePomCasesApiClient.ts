@@ -9,7 +9,7 @@ export default class ManagePomCasesApiClient {
     this.restClient = new RestClient('managePomCasesApi', config.apis.managePomCasesApi as ApiConfig, token)
   }
 
-  async listCases(): Promise<ParoleCase[]> {
+  async listParoleCases(): Promise<ParoleCase[]> {
     return this.restClient.get<ParoleCase[]>({ path: '/parole-cases' })
   }
 }

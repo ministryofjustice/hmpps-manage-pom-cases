@@ -33,7 +33,7 @@ describe('managePomCasesApiClient', () => {
         .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
         .reply(200, response)
 
-      const output = await managePomCasesApiClient.listCases()
+      const output = await managePomCasesApiClient.listParoleCases()
       expect(output).toEqual(response)
     })
   })
