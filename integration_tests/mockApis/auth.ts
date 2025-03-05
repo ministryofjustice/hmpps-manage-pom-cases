@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import type { Response } from 'superagent'
 
 import { stubFor, getMatchingRequests } from './wiremock'
+import { stubFeComponents } from './feComponents'
 import tokenVerification from './tokenVerification'
 
 interface UserToken {
@@ -131,6 +132,13 @@ export default {
   getSignInUrl,
   stubAuthPing: ping,
   stubAuthManageDetails: manageDetails,
-  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response]> =>
-    Promise.all([favicon(), redirect(), signOut(), token(userToken), tokenVerification.stubVerifyToken()]),
+  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response, Response]> =>
+    Promise.all([
+      favicon(),
+      redirect(),
+      signOut(),
+      token(userToken),
+      tokenVerification.stubVerifyToken(),
+      stubFeComponents(userToken.name),
+    ]),
 }

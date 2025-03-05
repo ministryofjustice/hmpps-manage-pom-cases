@@ -9,8 +9,8 @@ export default function setUpCaseLoad(): Router {
       return next()
     }
 
-    const { activeCaseLoad, caseLoads } = res.locals.feComponents.sharedData || {}
-    const activeCaseLoadId = activeCaseLoad?.caseLoadId || 'LEI' // TODO: remove hardcoded fallback (mock in tests)
+    const { activeCaseLoad, caseLoads } = res.locals.feComponents?.sharedData || {}
+    const activeCaseLoadId = activeCaseLoad?.caseLoadId
 
     res.locals.user = {
       ...res.locals.user,
