@@ -5,8 +5,17 @@ export default class PrisonRoutes {
   constructor(private readonly auditService: AuditService) {}
 
   dashboard = async (req: Request, res: Response): Promise<void> => {
-    await this.auditService.logPageView(Page.HOME_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await this.auditService.logPageView(Page.PRISON_DASHBOARD, { who: res.locals.user.username, correlationId: req.id })
 
     res.render('pages/prisons/dashboard')
+  }
+
+  parole = async (req: Request, res: Response): Promise<void> => {
+    await this.auditService.logPageView(Page.PAROLE_CASES_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
+    res.render('pages/prisons/parole')
   }
 }

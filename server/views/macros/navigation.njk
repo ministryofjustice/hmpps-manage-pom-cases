@@ -22,8 +22,8 @@
     },
     {
       text: "Parole",
-      href: "#parole",
-      active: false,
+      href: paths.prisons.parole | toPath({ prisonCode: activeCaseLoadId }),
+      active: currentUrl === paths.prisons.parole | toPath({ prisonCode: activeCaseLoadId }),
       shown: userIsSpo
     },
     {
