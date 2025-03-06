@@ -6,12 +6,13 @@ generic-service:
     host: manage-pom-cases-dev.prison.service.justice.gov.uk
 
   env:
+    ENVIRONMENT_NAME: DEV
+    AUDIT_ENABLED: "false"
     INGRESS_URL: "https://manage-pom-cases-dev.prison.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
     COMPONENT_API_URL: "https://frontend-components-dev.hmpps.service.justice.gov.uk"
-    ENVIRONMENT_NAME: DEV
-    AUDIT_ENABLED: "false"
+    MANAGE_POM_CASES_API_URL: "https://manage-pom-cases-api-dev.prison.service.justice.gov.uk"
 
 generic-prometheus-alerts:
   alertSeverity: mpc-alerts-nonprod-dev

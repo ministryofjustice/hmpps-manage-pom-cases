@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import type { Response } from 'superagent'
 
 import { stubFor, getMatchingRequests } from './wiremock'
-import { stubFeComponents } from './feComponents'
+import stubFeComponents from './feComponents'
 import tokenVerification from './tokenVerification'
 
 interface UserToken {

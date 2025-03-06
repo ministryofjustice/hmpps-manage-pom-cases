@@ -4,6 +4,7 @@ context('Healthcheck', () => {
       cy.task('reset')
       cy.task('stubAuthPing')
       cy.task('stubTokenVerificationPing')
+      cy.task('stubManagePomCasesPing')
     })
 
     it('Health check page is visible and UP', () => {
@@ -24,11 +25,13 @@ context('Healthcheck', () => {
       cy.task('reset')
       cy.task('stubAuthPing')
       cy.task('stubTokenVerificationPing', 500)
+      cy.task('stubManagePomCasesPing')
     })
 
     it('Reports correctly when token verification down', () => {
       cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).then(response => {
         expect(response.body.components.hmppsAuth.status).to.equal('UP')
+        expect(response.body.components.managePomCasesApi.status).to.equal('UP')
         expect(response.body.components.tokenVerification.status).to.equal('DOWN')
         expect(response.body.components.tokenVerification.details).to.contain({ status: 500, attempts: 3 })
       })

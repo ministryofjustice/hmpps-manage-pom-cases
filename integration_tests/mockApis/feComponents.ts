@@ -16,7 +16,7 @@ const headerHtml = `<header class="fallback-dps-header" role="banner"> <div clas
 // simplified footer HTML
 const footerHtml = '<footer class="govuk-footer govuk-!-display-none-print"></footer>'
 
-export const stubFeComponents = (userName: string = 'john smith') => {
+const stubFeComponents = (userName: string = 'john smith') => {
   const formattedUserName = initialiseName(convertToTitleCase(userName))
   const headerWithNameHtml = headerHtml.replace('[USERNAME]', formattedUserName)
 
@@ -48,3 +48,5 @@ export const stubFeComponents = (userName: string = 'john smith') => {
     },
   })
 }
+
+export default stubFeComponents
