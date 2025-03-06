@@ -1,8 +1,8 @@
 import nock from 'nock'
 import config from '../config'
 import { mockRequest } from '../routes/testutils/requestTestUtils'
-import { ParoleCase } from '../@types/shared'
-import { returnParoleCase } from './testutils/paroleCasesMocks'
+import { UpcomingParoleCase } from '../@types/shared'
+import { returnUpcomingParoleCase } from './testutils/paroleCasesMocks'
 import ManagePomCasesApiClient from './managePomCasesApiClient'
 
 describe('managePomCasesApiClient', () => {
@@ -10,7 +10,7 @@ describe('managePomCasesApiClient', () => {
   let managePomCasesApiClient: ManagePomCasesApiClient
 
   const req = mockRequest({})
-  const paroleCase = returnParoleCase()
+  const paroleCase = returnUpcomingParoleCase()
 
   beforeEach(() => {
     fakeApiClient = nock(config.apis.managePomCasesApi.url)
@@ -22,18 +22,18 @@ describe('managePomCasesApiClient', () => {
     nock.cleanAll()
   })
 
-  describe('listCases', () => {
-    it('should list cases approaching parole', async () => {
-      const response: { data: ParoleCase[] } = {
+  describe('upcomingParoleCases', () => {
+    it('should return a list of upcoming parole cases', async () => {
+      const response: { data: UpcomingParoleCase[] } = {
         data: [paroleCase],
       }
 
       fakeApiClient
-        .get(`/parole-cases`)
+        .get(`/parole-cases/upcoming`)
         .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
         .reply(200, response)
 
-      const output = await managePomCasesApiClient.listParoleCases()
+      const output = await managePomCasesApiClient.upcomingParoleCases()
       expect(output).toEqual(response)
     })
   })

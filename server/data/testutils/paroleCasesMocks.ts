@@ -1,23 +1,19 @@
-import { type NextParoleDate } from '../../@types/shared/models/NextParoleDate'
-import { type ParoleCase } from '../../@types/shared'
-import { returnOffender } from './offenderMocks'
-import { returnPom } from './pomMocks'
+import { type UpcomingParoleCase } from '../../@types/shared'
 
-const returnNextParoleDate = ({ date = '06 Jun 2025', dateType = 'TED' } = {}): NextParoleDate => ({
-  date,
-  dateType,
-})
-
-const returnParoleCase = ({
-  offender = returnOffender(),
-  pom = returnPom(),
+const returnUpcomingParoleCase = ({
+  caseId = 'A1234AA',
+  caseName = 'John Doe',
+  pomName = 'MOIC Pom',
   pomRole = 'Supporting',
-  nextParoleDate = returnNextParoleDate(),
-} = {}): ParoleCase => ({
-  offender,
-  pom,
+  paroleDateValue = '2026-01-01',
+  paroleDateType = 'TED',
+} = {}): UpcomingParoleCase => ({
+  caseId,
+  caseName,
+  pomName,
   pomRole,
-  nextParoleDate,
+  paroleDateValue,
+  paroleDateType,
 })
 
-export { returnParoleCase }
+export { returnUpcomingParoleCase }

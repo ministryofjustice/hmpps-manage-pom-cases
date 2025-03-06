@@ -6,7 +6,9 @@ import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
-
+import type { Services } from './services'
+import setUpCaseLoad from './middleware/setUpCaseLoad'
+import populateClientToken from './middleware/populateClientToken'
 import setUpAuthentication from './middleware/setUpAuthentication'
 import setUpCsrf from './middleware/setUpCsrf'
 import setUpCurrentUser from './middleware/setUpCurrentUser'
@@ -20,9 +22,6 @@ import setUpUserContext from './middleware/setUpUserContext'
 import routes from './routes'
 import logger from '../logger'
 import config from './config'
-
-import type { Services } from './services'
-import setUpCaseLoad from './middleware/setUpCaseLoad'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -43,9 +42,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(setUpUserContext())
-
-  // TODO: we need to request client creds for this to work
-  // app.use(populateClientToken(services.hmppsAuthClient))
+  app.use(populateClientToken(services.hmppsAuthClient))
 
   app.get(
     /^(?!.*\/api\/).*/,
