@@ -1,12 +1,13 @@
 import type { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
-import { returnParoleCase } from '../../server/data/testutils/paroleCasesMocks'
+import { returnUpcomingParoleCase } from '../../server/data/testutils/paroleCasesMocks'
 
 const apiPrefix = '/manage-pom-cases-api'
-const paroleCasesUri = 'parole-cases'
+const paroleCasesUri = 'parole-cases/upcoming'
 const headers = { 'Content-Type': 'application/json;charset=UTF-8' }
 
-const paroleCase = returnParoleCase()
+const paroleCase = returnUpcomingParoleCase()
+const prisonCode = 'LEI'
 
 export default {
   stubManagePomCasesPing: (httpStatus = 200): SuperAgentRequest =>
@@ -26,7 +27,7 @@ export default {
     stubFor({
       request: {
         method: 'GET',
-        urlPattern: `${apiPrefix}/${paroleCasesUri}`,
+        urlPattern: `${apiPrefix}/${paroleCasesUri}/${prisonCode}`,
       },
       response: {
         status: httpStatus,

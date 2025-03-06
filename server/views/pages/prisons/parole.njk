@@ -1,6 +1,5 @@
 {% extends "../../partials/layout.njk" %}
 {%- from "govuk/components/table/macro.njk" import govukTable -%}
-{% import "../../macros/utils.njk" as utils %}
 
 {% set pageTitle = applicationName + " - Parole cases" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -18,13 +17,13 @@
     {% for case in paroleCases %}
       {% set tableRows = (tableRows.push([
         {
-          text: utils.fullName(case.offender),
+          text: case.caseName,
           attributes: {
             "data-qa": "offender-name-column"
           }
         },
         {
-          text: utils.fullName(case.pom),
+          text: case.pomName,
           attributes: {
             "data-qa": "pom-name-column"
           }
@@ -36,7 +35,7 @@
           }
         },
         {
-          text: case.nextParoleDate.date,
+          text: case.paroleDateValue,
           attributes: {
             "data-qa": "next-parole-date-column"
           }
