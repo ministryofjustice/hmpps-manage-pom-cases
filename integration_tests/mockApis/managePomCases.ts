@@ -7,6 +7,7 @@ const paroleCasesUri = 'parole-cases/upcoming'
 const headers = { 'Content-Type': 'application/json;charset=UTF-8' }
 
 const paroleCase = returnUpcomingParoleCase()
+const prisonCode = 'LEI'
 
 export default {
   stubManagePomCasesPing: (httpStatus = 200): SuperAgentRequest =>
@@ -26,7 +27,7 @@ export default {
     stubFor({
       request: {
         method: 'GET',
-        urlPattern: `${apiPrefix}/${paroleCasesUri}`,
+        urlPattern: `${apiPrefix}/${paroleCasesUri}/${prisonCode}`,
       },
       response: {
         status: httpStatus,

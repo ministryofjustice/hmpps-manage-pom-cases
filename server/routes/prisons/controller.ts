@@ -21,7 +21,7 @@ export default class PrisonRoutes {
       correlationId: req.id,
     })
 
-    const paroleCases = await this.paroleService.upcomingCases(clientToken(req))
+    const paroleCases = await this.paroleService.upcomingCases(clientToken(req), req.params.prisonCode)
 
     res.render('pages/prisons/parole', { paroleCases })
   }

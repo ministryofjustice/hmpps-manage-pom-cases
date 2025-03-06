@@ -11,6 +11,7 @@ describe('managePomCasesApiClient', () => {
 
   const req = mockRequest({})
   const paroleCase = returnUpcomingParoleCase()
+  const prisonCode = 'LEI'
 
   beforeEach(() => {
     fakeApiClient = nock(config.apis.managePomCasesApi.url)
@@ -29,11 +30,11 @@ describe('managePomCasesApiClient', () => {
       }
 
       fakeApiClient
-        .get(`/parole-cases/upcoming`)
+        .get(`/parole-cases/upcoming/${prisonCode}`)
         .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
         .reply(200, response)
 
-      const output = await managePomCasesApiClient.upcomingParoleCases()
+      const output = await managePomCasesApiClient.upcomingParoleCases(prisonCode)
       expect(output).toEqual(response)
     })
   })
