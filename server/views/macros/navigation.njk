@@ -1,40 +1,40 @@
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 
-{% macro primaryNavigation(currentUrl, activeCaseLoadId, userIsSpo, userIsPom) %}
+{% macro primaryNavigation(currentUrl, activeCaseLoadId, staffId, userIsSpo, userIsPom) %}
   {% set items = [
     {
       text: "POM cases",
-      href: paths.prisons.dashboard | toPath({ prisonCode: activeCaseLoadId }),
-      active: currentUrl === paths.prisons.dashboard | toPath({ prisonCode: activeCaseLoadId }),
+      href: paths.pomCases.dashboard | toPath({ prisonCode: activeCaseLoadId }),
+      active: isActiveHeaderSection(currentUrl, paths.pomCases),
       shown: userIsSpo or userIsPom
     },
     {
       text: "Allocations",
-      href: "#allocations",
+      href: paths.allocations.unallocated | toLegacyUrl({ prisonCode: activeCaseLoadId }),
       active: false,
       shown: userIsSpo
     },
     {
       text: "Caseload",
-      href: "#caseload",
+      href: paths.staff.caseload | toLegacyUrl({ prisonCode: activeCaseLoadId, staffId: staffId }),
       active: false,
       shown: userIsPom
     },
     {
       text: "Parole",
-      href: paths.prisons.parole | toPath({ prisonCode: activeCaseLoadId }),
-      active: currentUrl === paths.prisons.parole | toPath({ prisonCode: activeCaseLoadId }),
+      href: paths.parole.cases | toPath({ prisonCode: activeCaseLoadId }),
+      active: isActiveHeaderSection(currentUrl, paths.parole),
       shown: userIsSpo
     },
     {
       text: "Handover",
-      href: "#handover",
+      href: paths.handover.upcoming | toLegacyUrl({ prisonCode: activeCaseLoadId }),
       active: false,
       shown: userIsSpo or userIsPom
     },
     {
       text: "Staff",
-      href: "#staff",
+      href: paths.staff.poms | toLegacyUrl({ prisonCode: activeCaseLoadId }),
       active: false,
       shown: userIsSpo
     }

@@ -15,8 +15,8 @@ export default function Index({ auditService, paroleService }: Services): Router
 
   const prisonRoutes = new PrisonRoutes(auditService, paroleService)
 
-  get(paths.prisons.dashboard, prisonRoutes.dashboard, [AuthRole.POM, AuthRole.SPO])
-  get(paths.prisons.parole, prisonRoutes.parole, [AuthRole.SPO])
+  get(paths.pomCases.dashboard, prisonRoutes.dashboard, [AuthRole.POM, AuthRole.SPO])
+  get(paths.parole.cases, prisonRoutes.paroleCases, [AuthRole.SPO])
 
   return router
 }

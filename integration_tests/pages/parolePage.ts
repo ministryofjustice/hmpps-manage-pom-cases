@@ -5,8 +5,14 @@ export default class ParolePage extends SignedInPage {
     super('Parole cases')
   }
 
-  offenderNames = () =>
-    cy.get('[data-qa=offender-name-column]').then(cells => cells.map((index, cell) => cell.innerText).get())
+  private getColumnText = (dataQa: string) =>
+    cy.get(`[data-qa=${dataQa}]`).then(cells => cells.map((index, cell) => cell.innerText).get())
 
-  pomNames = () => cy.get('[data-qa=pom-name-column]').then(cells => cells.map((index, cell) => cell.innerText).get())
+  offenderNames = () => this.getColumnText('offender-name-column')
+
+  pomNames = () => this.getColumnText('pom-name-column')
+
+  pomRoles = () => this.getColumnText('pom-role-column')
+
+  paroleDates = () => this.getColumnText('next-parole-date-column')
 }

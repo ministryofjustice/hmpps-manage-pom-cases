@@ -23,7 +23,7 @@
   {{ feComponents.header | safe }}
 
   {% if user.activeCaseLoadId %}
-    {{ primaryNavigation(currentUrl, user.activeCaseLoadId, userContext.isSpo, userContext.isPom) }}
+    {{ primaryNavigation(currentUrl, user.activeCaseLoadId, user.staffId|string, userContext.isSpo, userContext.isPom) }}
   {% endif %}
 {% endblock %}
 
