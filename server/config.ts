@@ -110,4 +110,5 @@ export default {
   dpsComponents: {
     url: get('COMPONENT_API_URL', '', requiredInProduction),
   },
+  legacyAppUrl: get('LEGACY_APP_URL', 'http://localhost:3001', requiredInProduction),
 }

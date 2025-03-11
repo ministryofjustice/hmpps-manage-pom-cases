@@ -4,7 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { Params, Path } from 'static-path'
-import { initialiseName } from './utils'
+import { initialiseName, formatDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import paths from '../routes/paths'
@@ -49,6 +49,7 @@ export default function nunjucksSetup(app: express.Express): void {
   )
 
   njkEnv.addGlobal('paths', paths)
+
   njkEnv.addFilter('toPath', <T extends string>(staticPath: Path<T>, params: Params<T>) => {
     if (!staticPath) {
       throw Error(`no path provided`)
@@ -56,6 +57,20 @@ export default function nunjucksSetup(app: express.Express): void {
     return staticPath(params)
   })
 
+  njkEnv.addFilter('toLegacyUrl', <T extends string>(staticPath: Path<T>, params: Params<T>) => {
+    return config.legacyAppUrl + njkEnv.getFilter('toPath')(staticPath, params)
+  })
+
+  njkEnv.addGlobal(
+    'isActiveHeaderSection',
+    <T extends string>(currentUrl: string, sectionPaths: Record<string, Path<T>>) => {
+      return Object.values(sectionPaths)
+        .map(sp => sp.pattern)
+        .some(pattern => new RegExp(`^${pattern.replace(/:[^\s/]+/g, '[^/]+')}$`).test(currentUrl))
+    },
+  )
+
+  njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }

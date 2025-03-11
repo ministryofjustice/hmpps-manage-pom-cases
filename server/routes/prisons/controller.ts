@@ -15,7 +15,7 @@ export default class PrisonRoutes {
     res.render('pages/prisons/dashboard')
   }
 
-  parole = async (req: Request, res: Response): Promise<void> => {
+  paroleCases = async (req: Request, res: Response): Promise<void> => {
     await this.auditService.logPageView(Page.PAROLE_CASES_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,

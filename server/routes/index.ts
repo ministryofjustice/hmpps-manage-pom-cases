@@ -10,7 +10,7 @@ export default function routes(services: Services): Router {
 
   router.get(paths.root({}), (_req: Request, res: Response) =>
     res.redirect(
-      paths.prisons.dashboard({
+      paths.pomCases.dashboard({
         // @ts-expect-error - not sure why the property is not found!
         prisonCode: res.locals.user.activeCaseLoadId,
       }),

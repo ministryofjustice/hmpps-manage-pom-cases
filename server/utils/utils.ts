@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -22,4 +24,8 @@ const initialiseName = (fullName?: string): string | null => {
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
 
-export { properCase, convertToTitleCase, initialiseName }
+const formatDate = (date: Date, pattern: string = 'dd MMM yyyy', defaultValue: string = null) => {
+  return date ? format(date, pattern) : defaultValue
+}
+
+export { properCase, convertToTitleCase, initialiseName, formatDate }

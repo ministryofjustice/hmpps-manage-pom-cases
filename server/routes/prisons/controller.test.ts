@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe('Dashboard', () => {
   const rootPath = paths.root({})
-  const dashboardPath = paths.prisons.dashboard({ prisonCode: 'LEI' })
+  const dashboardPath = paths.pomCases.dashboard({ prisonCode: 'LEI' })
 
   it('should redirect to the dashboard page for the prison', () => {
     return request(app).get(rootPath).expect(302).expect('Location', dashboardPath)
@@ -57,7 +57,7 @@ describe('Parole', () => {
     paroleService.upcomingCases.mockReturnValue(null)
 
     const prisonCode = 'LEI'
-    const parolePath = paths.prisons.parole({ prisonCode })
+    const parolePath = paths.parole.cases({ prisonCode })
 
     return request(app)
       .get(parolePath)

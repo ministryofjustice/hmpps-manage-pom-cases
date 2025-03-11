@@ -12,37 +12,43 @@
     All cases in this prison with a target hearing date, PED or TED in the next 10 months
   </p>
 
-  <section id="approaching-parole">
-    {% set tableRows = [] %}
-    {% for case in paroleCases %}
-      {% set tableRows = (tableRows.push([
-        {
-          text: case.caseName,
-          attributes: {
-            "data-qa": "offender-name-column"
-          }
-        },
-        {
-          text: case.pomName,
-          attributes: {
-            "data-qa": "pom-name-column"
-          }
-        },
-        {
-          text: case.pomRole,
-          attributes: {
-            "data-qa": "pom-role-column"
-          }
-        },
-        {
-          text: case.paroleDateValue,
-          attributes: {
-            "data-qa": "next-parole-date-column"
-          }
-        }
-      ]), tableRows) %}
-    {% endfor %}
+  {% set tableRows = [] %}
+  {% for case in paroleCases %}
+    {% set caseUrl = paths.allocations.show | toLegacyUrl({ prisonCode: user.activeCaseLoadId, caseId: case.caseId }) %}
+    {% set pomUrl = paths.staff.show | toLegacyUrl({ prisonCode: user.activeCaseLoadId, staffId: '12345' }) %}
 
+    {% set tableRows = (tableRows.push([
+      {
+        html: "<a href="+ caseUrl +">"+ case.caseName +"</a><br><span class='govuk-hint govuk-!-margin-bottom-0'>"+ case.caseId +"</span>",
+        attributes: {
+          "data-qa": "offender-name-column",
+          "data-sort-value": case.caseName
+        }
+      },
+      {
+        html: "<a href="+ pomUrl +">"+ case.pomName +"</a>",
+        attributes: {
+          "data-qa": "pom-name-column",
+          "data-sort-value": case.pomName
+        }
+      },
+      {
+        text: case.pomRole,
+        attributes: {
+          "data-qa": "pom-role-column"
+        }
+      },
+      {
+        html: "<span class='govuk-!-margin-bottom-0'>"+ case.paroleDateType +":</span><br>" + (case.paroleDateValue | formatDate),
+        attributes: {
+          "data-qa": "next-parole-date-column",
+          "data-sort-value": case.paroleDateValue
+        }
+      }
+    ]), tableRows) %}
+  {% endfor %}
+
+  <section id="approaching-parole">
     {{ govukTable({
       attributes: {
         'data-module': 'moj-sortable-table'
