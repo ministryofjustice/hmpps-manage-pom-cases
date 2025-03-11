@@ -16,6 +16,7 @@ const createToken = (userToken: UserToken) => {
   const payload = {
     name: userToken.name || 'john smith',
     user_name: 'USER1',
+    user_id: 12345,
     scope: ['read'],
     auth_source: 'nomis',
     authorities,
@@ -120,6 +121,7 @@ const token = (userToken: UserToken) =>
         access_token: createToken(userToken),
         token_type: 'bearer',
         user_name: 'USER1',
+        user_id: 12345,
         auth_source: 'nomis',
         expires_in: 599,
         scope: 'read',
