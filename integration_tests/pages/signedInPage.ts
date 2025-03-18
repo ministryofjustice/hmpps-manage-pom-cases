@@ -17,9 +17,11 @@ export default abstract class SignedInPage extends Page {
 
   changeLocationLink = (): PageElement => cy.get('[data-qa="changeCaseLoad"]')
 
+  primaryNavigation = (): PageElement => cy.get('nav.moj-primary-navigation a')
+
   primaryNavigationLinks = () =>
-    cy.get('nav.moj-primary-navigation a').then(cells => cells.map((index, cell) => cell.innerText).get())
+    this.primaryNavigation().then(cells => cells.map((index, cell) => cell.innerText).get())
 
   navigationLink = (text: string): PageElement =>
-    cy.get('nav.moj-primary-navigation a').then(cells => cells.filter((index, cell) => cell.innerText === text))
+    this.primaryNavigation().then(cells => cells.filter((index, cell) => cell.innerText === text))
 }

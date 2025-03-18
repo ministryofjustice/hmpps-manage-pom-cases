@@ -4,10 +4,12 @@ import type { Response } from 'superagent'
 import { stubFor, getMatchingRequests } from './wiremock'
 import stubFeComponents from './feComponents'
 import tokenVerification from './tokenVerification'
+import managePomCases from './managePomCases'
 
 interface UserToken {
   name?: string
   roles?: string[]
+  userId?: number
 }
 
 const createToken = (userToken: UserToken) => {
@@ -16,7 +18,7 @@ const createToken = (userToken: UserToken) => {
   const payload = {
     name: userToken.name || 'john smith',
     user_name: 'USER1',
-    user_id: 12345,
+    user_id: userToken.userId || 12345,
     scope: ['read'],
     auth_source: 'nomis',
     authorities,
@@ -134,7 +136,9 @@ export default {
   getSignInUrl,
   stubAuthPing: ping,
   stubAuthManageDetails: manageDetails,
-  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response, Response]> =>
+  stubSignIn: (
+    userToken: UserToken = {},
+  ): Promise<[Response, Response, Response, Response, Response, Response, Response]> =>
     Promise.all([
       favicon(),
       redirect(),
@@ -142,5 +146,6 @@ export default {
       token(userToken),
       tokenVerification.stubVerifyToken(),
       stubFeComponents(userToken.name),
+      managePomCases.stubUserHasPomRole(200, userToken.userId),
     ]),
 }
