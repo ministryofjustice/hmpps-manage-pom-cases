@@ -41,7 +41,6 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
-  app.use(setUpUserContext())
   app.use(populateClientToken(services.hmppsAuthClient))
 
   app.get(
@@ -52,7 +51,9 @@ export default function createApp(services: Services): express.Application {
       logger,
     }),
   )
+
   app.use(setUpCaseLoad())
+  app.use(setUpUserContext(services.staffService))
 
   app.use(routes(services))
 

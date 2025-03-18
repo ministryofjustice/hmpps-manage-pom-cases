@@ -12,6 +12,7 @@ describe('managePomCasesApiClient', () => {
   const req = mockRequest({})
   const paroleCase = returnUpcomingParoleCase()
   const prisonCode = 'LEI'
+  const staffId = 12345
 
   beforeEach(() => {
     fakeApiClient = nock(config.apis.managePomCasesApi.url)
@@ -36,6 +37,18 @@ describe('managePomCasesApiClient', () => {
 
       const output = await managePomCasesApiClient.upcomingParoleCases(prisonCode)
       expect(output).toEqual(response)
+    })
+  })
+
+  describe('userHasPomRole', () => {
+    it('should return true if user has a pom role', async () => {
+      fakeApiClient
+        .get(`/poms/${staffId}/is-pom/${prisonCode}`)
+        .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
+        .reply(() => [200, true, {}])
+
+      const output = await managePomCasesApiClient.userHasPomRole(staffId, prisonCode)
+      expect(output).toEqual(true)
     })
   })
 })
