@@ -4,7 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { Params, Path } from 'static-path'
-import { initialiseName, formatDate } from './utils'
+import { initialiseName, formatDate, convertToTitleCase } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import paths from '../routes/paths'
@@ -72,5 +72,6 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('initialiseName', initialiseName)
+  njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }

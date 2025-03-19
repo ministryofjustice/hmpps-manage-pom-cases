@@ -27,8 +27,8 @@ context('Listing parole cases', () => {
 
     Page.verifyOnPage(ParolePage)
     const parolePage = new ParolePage()
-    parolePage.offenderNames().should('contain', 'John Doe\nA1234AA')
-    parolePage.pomNames().should('contain', 'MOIC Pom')
+    parolePage.offenderNames().should('contain', 'Doe, John\nA1234AA')
+    parolePage.pomNames().should('contain', 'Moic Pom')
     parolePage.pomRoles().should('contain', 'Supporting')
     parolePage.paroleDates().should('contain', 'TED:\n01 Jan 2026')
   })

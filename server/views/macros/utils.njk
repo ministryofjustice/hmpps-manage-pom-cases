@@ -1,3 +1,7 @@
-{% macro fullName(person) %}
-  {{ person.firstName }} {{ person.lastName }}
+{% macro offenderFullName(obj) %}
+  {{ (obj.lastName + ", " + obj.firstName) | convertToTitleCase }}
+{% endmacro %}
+
+{% macro pomFullName(obj) %}
+  {{ (obj.pomFirstName + " " + obj.pomLastName) | convertToTitleCase }}
 {% endmacro %}
